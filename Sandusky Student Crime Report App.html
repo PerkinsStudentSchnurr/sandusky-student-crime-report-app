@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<!-- saved from url=(0095)file:///C:/Users/ryans/Documents/Codex/2026-05-29/develop-a-code-for-an-that/outputs/index.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta http-equiv="Content-Security-Policy" content="default-src &#39;self&#39;; script-src &#39;self&#39; &#39;unsafe-inline&#39;; style-src &#39;self&#39; &#39;unsafe-inline&#39;; img-src &#39;self&#39; data:; connect-src &#39;none&#39;; frame-src &#39;none&#39;; object-src &#39;none&#39;; base-uri &#39;self&#39;; form-action &#39;none&#39;;">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sandusky Student Crime Report App</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #18212f;
+      --muted: #5c6878;
+      --line: #d8dee8;
+      --panel: #ffffff;
+      --soft: #f5f7fa;
+      --accent: #0d6b7d;
+      --accent-dark: #084d5b;
+      --warn: #9b4d00;
+      --danger: #b42318;
+      --ok: #137333;
+      --shadow: 0 16px 38px rgba(18, 31, 46, 0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--ink);
+      background: linear-gradient(180deg, #e9f2f5 0, #f7f8f4 36%, #ffffff 100%);
+    }
+
+    header {
+      padding: 28px 20px 20px;
+      background: #102633;
+      color: #fff;
+      border-bottom: 5px solid #d4a017;
+    }
+
+    .wrap {
+      width: min(1120px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .topline {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 10px;
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      border-radius: 999px;
+      color: #f5f7fa;
+      font-size: 0.88rem;
+      font-weight: 700;
+      letter-spacing: 0;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(2rem, 4vw, 3.35rem);
+      line-height: 1.05;
+      letter-spacing: 0;
+    }
+
+    .lead {
+      max-width: 760px;
+      margin: 14px 0 0;
+      color: #dce8ee;
+      font-size: 1.08rem;
+      line-height: 1.55;
+    }
+
+    main {
+      padding: 28px 0 42px;
+    }
+
+    .notice-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .notice {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-left: 5px solid var(--accent);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+      padding: 16px;
+      min-height: 134px;
+    }
+
+    .notice.emergency {
+      border-left-color: var(--danger);
+    }
+
+    .notice.student {
+      border-left-color: #d4a017;
+    }
+
+    .notice h2 {
+      margin: 0 0 8px;
+      font-size: 1rem;
+      letter-spacing: 0;
+    }
+
+    .notice p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.45;
+      font-size: 0.95rem;
+    }
+
+    .notice a {
+      color: var(--accent-dark);
+      font-weight: 700;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 340px;
+      gap: 18px;
+      align-items: start;
+    }
+
+    form,
+    aside {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+    }
+
+    form {
+      padding: 20px;
+    }
+
+    fieldset {
+      border: 0;
+      padding: 0;
+      margin: 0 0 26px;
+    }
+
+    legend {
+      width: 100%;
+      padding-bottom: 10px;
+      margin-bottom: 14px;
+      border-bottom: 1px solid var(--line);
+      font-size: 1.2rem;
+      font-weight: 800;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .full {
+      grid-column: 1 / -1;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 7px;
+      font-weight: 700;
+      font-size: 0.94rem;
+    }
+
+    .hint {
+      display: block;
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: 0.84rem;
+      line-height: 1.35;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      min-height: 44px;
+      border: 1px solid #bdc7d4;
+      border-radius: 6px;
+      padding: 10px 11px;
+      font: inherit;
+      color: var(--ink);
+      background: #fff;
+    }
+
+    textarea {
+      min-height: 140px;
+      resize: vertical;
+      line-height: 1.45;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      outline: 3px solid rgba(13, 107, 125, 0.22);
+      border-color: var(--accent);
+    }
+
+    .check {
+      display: grid;
+      grid-template-columns: 20px 1fr;
+      gap: 10px;
+      align-items: start;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--soft);
+      margin-bottom: 10px;
+    }
+
+    .check input {
+      min-height: auto;
+      width: 18px;
+      height: 18px;
+      margin-top: 2px;
+    }
+
+    .check label {
+      margin: 0;
+      line-height: 1.4;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      padding-top: 6px;
+    }
+
+    button {
+      border: 0;
+      border-radius: 6px;
+      padding: 11px 14px;
+      min-height: 44px;
+      font: inherit;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .primary {
+      color: #fff;
+      background: var(--accent);
+    }
+
+    .primary:hover {
+      background: var(--accent-dark);
+    }
+
+    .secondary {
+      color: var(--ink);
+      background: #e9edf2;
+      border: 1px solid #c8d0da;
+    }
+
+    .danger {
+      color: #fff;
+      background: var(--danger);
+    }
+
+    aside {
+      overflow: hidden;
+    }
+
+    .side-section {
+      padding: 16px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .side-section:last-child {
+      border-bottom: 0;
+    }
+
+    .side-section h2 {
+      margin: 0 0 8px;
+      font-size: 1rem;
+    }
+
+    .side-section p,
+    .side-section li {
+      color: var(--muted);
+      line-height: 1.45;
+      font-size: 0.93rem;
+    }
+
+    .side-section ul {
+      padding-left: 20px;
+      margin: 8px 0 0;
+    }
+
+    .status {
+      display: none;
+      margin-top: 14px;
+      padding: 12px;
+      border-radius: 8px;
+      font-weight: 700;
+      line-height: 1.35;
+    }
+
+    .status.show {
+      display: block;
+    }
+
+    .status.ok {
+      color: var(--ok);
+      background: #edf7ee;
+      border: 1px solid #b8dfc0;
+    }
+
+    .status.error {
+      color: var(--danger);
+      background: #fff0f0;
+      border: 1px solid #f0b4b4;
+    }
+
+    .preview {
+      white-space: pre-wrap;
+      background: #101820;
+      color: #eef7fb;
+      padding: 14px;
+      border-radius: 8px;
+      max-height: 340px;
+      overflow: auto;
+      font-family: Consolas, Monaco, monospace;
+      font-size: 0.82rem;
+      line-height: 1.45;
+    }
+
+    footer {
+      color: var(--muted);
+      font-size: 0.88rem;
+      line-height: 1.45;
+      padding: 0 0 28px;
+    }
+
+    @media (max-width: 900px) {
+      .notice-grid,
+      .layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 620px) {
+      .wrap {
+        width: min(100% - 22px, 1120px);
+      }
+
+      header {
+        padding-top: 22px;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      form {
+        padding: 16px;
+      }
+
+      .actions button {
+        width: 100%;
+      }
+    }
+
+    @media print {
+      header,
+      .notice-grid,
+      aside,
+      .actions,
+      .status,
+      footer {
+        display: none;
+      }
+
+      body {
+        background: #fff;
+      }
+
+      form {
+        box-shadow: none;
+        border: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <div class="topline">
+        <span class="badge">Student-created crime report app</span>
+        <span class="badge">Sandusky, Ohio</span>
+      </div>
+      <h1>Sandusky Crime Report Draft</h1>
+      <p class="lead">
+        A student-created app for organizing information about a possible crime in Sandusky, Ohio.
+        This tool creates a personal draft only; it does not send, file, or submit an official police report.
+      </p>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="notice-grid" aria-label="Important notices">
+      <article class="notice emergency">
+        <h2>Emergency notice</h2>
+        <p>If anyone is in immediate danger, call <strong>911</strong>. Do not use this student app for emergencies, active crimes, threats, medical needs, or urgent police response.</p>
+      </article>
+      <article class="notice student">
+        <h2>Not a police department</h2>
+        <p>This app is not associated with, endorsed by, operated by, or connected to the Sandusky Police Department, Erie County, or any legitimate police department or government agency.</p>
+      </article>
+      <article class="notice">
+        <h2>Lawful use only</h2>
+        <p>Use truthful information only. Ohio law prohibits knowingly false reports or false alarms to law enforcement. For non-emergency help, contact the appropriate official agency directly.</p>
+      </article>
+    </section>
+
+    <div class="layout">
+      <form id="reportForm" novalidate="">
+        <fieldset>
+          <legend>Incident Details</legend>
+          <div class="grid">
+            <div>
+              <label for="incidentType">Type of incident *</label>
+              <select id="incidentType" name="incidentType" required="">
+                <option value="">Select one</option>
+                <option>Theft or stolen property</option>
+                <option>Assault or threat</option>
+                <option>Burglary or trespassing</option>
+                <option>Vehicle-related incident</option>
+                <option>Fraud or scam</option>
+                <option>Vandalism or property damage</option>
+                <option>Drug-related concern</option>
+                <option>Suspicious activity</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div>
+              <label for="occurredAt">Date and time *</label>
+              <input id="occurredAt" name="occurredAt" type="datetime-local" required="">
+            </div>
+            <div>
+              <label for="location">Location in Sandusky *</label>
+              <input id="location" name="location" autocomplete="street-address" placeholder="Street address, intersection, or landmark" required="">
+              <span class="hint">Include only details you reasonably believe are accurate.</span>
+            </div>
+            <div>
+              <label for="status">Incident status *</label>
+              <select id="status" name="status" required="">
+                <option value="">Select one</option>
+                <option>Already happened</option>
+                <option>Currently happening - call 911 instead</option>
+                <option>Ongoing concern - not immediate danger</option>
+                <option>Unknown</option>
+              </select>
+            </div>
+            <div class="full">
+              <label for="description">What happened? *</label>
+              <textarea id="description" name="description" required="" minlength="30" placeholder="Describe what you saw, heard, experienced, or discovered. Include sequence of events, approximate times, and relevant facts."></textarea>
+              <span class="hint">Avoid guesses. Mark uncertain details as uncertain.</span>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>People, Property, and Evidence</legend>
+          <div class="grid">
+            <div class="full">
+              <label for="people">People involved or witnesses</label>
+              <textarea id="people" name="people" placeholder="Names only if known, descriptions, contact information if voluntarily provided, and witness details."></textarea>
+              <span class="hint">Avoid posting private information publicly. Keep sensitive details for official agencies.</span>
+            </div>
+            <div>
+              <label for="property">Property affected</label>
+              <textarea id="property" name="property" placeholder="Describe stolen, damaged, or recovered property, including serial numbers if safe to include."></textarea>
+            </div>
+            <div>
+              <label for="evidence">Evidence available</label>
+              <textarea id="evidence" name="evidence" placeholder="Photos, video, receipts, messages, camera locations, or other records."></textarea>
+              <span class="hint">Do not alter, trespass for, or unlawfully obtain evidence.</span>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Your Contact Information</legend>
+          <div class="grid">
+            <div>
+              <label for="reporterName">Name *</label>
+              <input id="reporterName" name="reporterName" autocomplete="name" required="">
+            </div>
+            <div>
+              <label for="reporterPhone">Phone or email *</label>
+              <input id="reporterPhone" name="reporterPhone" autocomplete="email" required="">
+            </div>
+            <div class="full">
+              <label for="preferredContact">Preferred contact notes</label>
+              <input id="preferredContact" name="preferredContact" placeholder="Best time to contact, accessibility needs, or safety concerns">
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Required Acknowledgments</legend>
+          <div class="check">
+            <input id="studentAck" name="studentAck" type="checkbox" required="">
+            <label for="studentAck">I understand this is a student-created app and is not associated with any legitimate police department or government agency.</label>
+          </div>
+          <div class="check">
+            <input id="officialAck" name="officialAck" type="checkbox" required="">
+            <label for="officialAck">I understand this app does not create, send, or file an official police report. I must contact the appropriate official agency if I need official action.</label>
+          </div>
+          <div class="check">
+            <input id="truthAck" name="truthAck" type="checkbox" required="">
+            <label for="truthAck">I certify that the information I entered is true to the best of my knowledge and that I am not knowingly making a false report or false alarm.</label>
+          </div>
+          <div class="check">
+            <input id="emergencyAck" name="emergencyAck" type="checkbox" required="">
+            <label for="emergencyAck">I understand that emergencies, active crimes, immediate danger, and urgent threats require calling 911 instead of using this app.</label>
+          </div>
+        </fieldset>
+
+        <div class="actions">
+          <button class="primary" type="submit">Create Draft Report</button>
+          <button class="secondary" type="button" id="saveDraft">Save Draft in Browser</button>
+          <button class="secondary" type="button" id="downloadJson">Download JSON</button>
+          <button class="secondary" type="button" id="printReport">Print</button>
+          <button class="danger" type="button" id="clearForm">Clear</button>
+        </div>
+        <div id="formStatus" class="status" role="status" aria-live="polite"></div>
+      </form>
+
+      <aside aria-label="Guidance and report preview">
+        <section class="side-section">
+          <h2>Official contact reminder</h2>
+          <p>This student app is only for drafting. For official non-emergency help, contact the appropriate local agency. Erie County lists Sandusky Police at <strong>419-627-5863</strong>. Call <strong>911</strong> for emergencies.</p>
+        </section>
+        <section class="side-section">
+          <h2>Privacy and safety</h2>
+          <ul>
+            <li>Do not publish accusations, private data, or sensitive evidence online.</li>
+            <li>Do not confront suspects or attempt your own investigation.</li>
+            <li>Do not include Social Security numbers, passwords, or financial account numbers.</li>
+            <li>Tell an official agency if the report involves a child, weapon, injury, or ongoing threat.</li>
+          </ul>
+        </section>
+        <section class="side-section">
+          <h2>Draft preview</h2>
+          <div id="preview" class="preview">Complete the form and choose "Create Draft Report" to preview your report.</div>
+        </section>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="wrap">
+    <p>
+      Student-created educational project. Not legal advice. Not affiliated with Sandusky Police Department,
+      Erie County, the City of Sandusky, or any law enforcement or government agency. Legal references checked:
+      Ohio Revised Code Section 2917.32 and Erie County emergency contact information.
+    </p>
+  </footer>
+
+  <script>
+    const form = document.querySelector("#reportForm");
+    const preview = document.querySelector("#preview");
+    const statusBox = document.querySelector("#formStatus");
+    const storageKey = "sanduskyStudentCrimeReportDraft";
+
+    function getFormData() {
+      const data = new FormData(form);
+      return {
+        appNotice: "Student-created app. Not affiliated with any legitimate police department or government agency. Not an official police report.",
+        createdAt: new Date().toISOString(),
+        incidentType: data.get("incidentType").trim(),
+        occurredAt: data.get("occurredAt").trim(),
+        location: data.get("location").trim(),
+        status: data.get("status").trim(),
+        description: data.get("description").trim(),
+        people: data.get("people").trim(),
+        property: data.get("property").trim(),
+        evidence: data.get("evidence").trim(),
+        reporterName: data.get("reporterName").trim(),
+        reporterPhone: data.get("reporterPhone").trim(),
+        preferredContact: data.get("preferredContact").trim(),
+        acknowledgments: {
+          studentCreatedOnly: form.studentAck.checked,
+          notOfficialReport: form.officialAck.checked,
+          truthfulToBestKnowledge: form.truthAck.checked,
+          emergencyCall911: form.emergencyAck.checked
+        }
+      };
+    }
+
+    function reportText(report) {
+      return [
+        "SANDUSKY STUDENT CRIME REPORT DRAFT",
+        "Not affiliated with any legitimate police department or government agency.",
+        "This is not an official police report and has not been submitted to law enforcement.",
+        "",
+        `Created: ${new Date(report.createdAt).toLocaleString()}`,
+        `Incident type: ${report.incidentType}`,
+        `Date/time: ${report.occurredAt}`,
+        `Location: ${report.location}`,
+        `Status: ${report.status}`,
+        "",
+        "Description:",
+        report.description,
+        "",
+        "People or witnesses:",
+        report.people || "Not provided",
+        "",
+        "Property affected:",
+        report.property || "Not provided",
+        "",
+        "Evidence available:",
+        report.evidence || "Not provided",
+        "",
+        "Reporter contact:",
+        `${report.reporterName} - ${report.reporterPhone}`,
+        report.preferredContact || "No preferred contact notes",
+        "",
+        "Acknowledgments:",
+        "- Student-created only: yes",
+        "- Not an official report: yes",
+        "- Truthful to best knowledge: yes",
+        "- Emergencies require 911: yes"
+      ].join("\n");
+    }
+
+    function showStatus(message, type) {
+      statusBox.textContent = message;
+      statusBox.className = `status show ${type}`;
+    }
+
+    function validateForm() {
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        showStatus("Please complete all required fields and acknowledgments before creating a draft.", "error");
+        return false;
+      }
+
+      if (form.status.value.includes("Currently happening")) {
+        showStatus("This sounds urgent. Call 911 instead of using this student app.", "error");
+        return false;
+      }
+
+      return true;
+    }
+
+    function createDraft() {
+      if (!validateForm()) {
+        return null;
+      }
+
+      const report = getFormData();
+      preview.textContent = reportText(report);
+      showStatus("Draft created locally. It has not been submitted to any official agency.", "ok");
+      return report;
+    }
+
+    function saveBrowserDraft() {
+      const report = getFormData();
+      localStorage.setItem(storageKey, JSON.stringify(report));
+      showStatus("Draft saved in this browser only. It has not been submitted to any official agency.", "ok");
+    }
+
+    function restoreBrowserDraft() {
+      const saved = localStorage.getItem(storageKey);
+      if (!saved) {
+        return;
+      }
+
+      try {
+        const report = JSON.parse(saved);
+        Object.entries(report).forEach(([key, value]) => {
+          if (key === "acknowledgments" || key === "createdAt" || key === "appNotice") {
+            return;
+          }
+          if (form.elements[key]) {
+            form.elements[key].value = value;
+          }
+        });
+        preview.textContent = reportText(report);
+        showStatus("A browser-saved draft was restored.", "ok");
+      } catch {
+        localStorage.removeItem(storageKey);
+      }
+    }
+
+    function downloadReport() {
+      const report = createDraft();
+      if (!report) {
+        return;
+      }
+
+      const blob = new Blob([JSON.stringify(report, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `sandusky-student-crime-report-${Date.now()}.json`;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+    }
+
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      createDraft();
+    });
+
+    document.querySelector("#saveDraft").addEventListener("click", saveBrowserDraft);
+    document.querySelector("#downloadJson").addEventListener("click", downloadReport);
+    document.querySelector("#printReport").addEventListener("click", () => {
+      createDraft();
+      window.print();
+    });
+    document.querySelector("#clearForm").addEventListener("click", () => {
+      if (!confirm("Clear the form and browser-saved draft?")) {
+        return;
+      }
+      form.reset();
+      localStorage.removeItem(storageKey);
+      preview.textContent = "Complete the form and choose \"Create Draft Report\" to preview your report.";
+      showStatus("Form cleared.", "ok");
+    });
+
+    restoreBrowserDraft();
+  </script>
+
+
+</body></html>
